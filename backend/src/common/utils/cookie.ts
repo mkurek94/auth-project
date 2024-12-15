@@ -16,7 +16,7 @@ const defaults: CookieOptions = {
   sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
 };
 
-export const getRefreshTokenCookieOption = (): CookieOptions => {
+export const getRefreshTokenCookieOptions = (): CookieOptions => {
   const expiresIn = config.JWT.REFRESH_EXPIRES_IN;
   const expires = calculateExpirationDate(expiresIn);
 
@@ -27,7 +27,7 @@ export const getRefreshTokenCookieOption = (): CookieOptions => {
   };
 };
 
-export const getAccessTokenCookieOption = (): CookieOptions => {
+export const getAccessTokenCookieOptions = (): CookieOptions => {
   const expiresIn = config.JWT.EXPIRES_IN;
   const expires = calculateExpirationDate(expiresIn);
 
@@ -44,8 +44,8 @@ export const setAuthenticationCookies = ({
   refreshToken,
 }: CookiePayload): Response =>
   res
-    .cookie("accessToken", accessToken, getAccessTokenCookieOption())
-    .cookie("refreshToken", refreshToken, getRefreshTokenCookieOption());
+    .cookie("accessToken", accessToken, getAccessTokenCookieOptions())
+    .cookie("refreshToken", refreshToken, getRefreshTokenCookieOptions());
 
 export const clearAuthenticationCookies = (res: Response): Response =>
   res
