@@ -29,6 +29,7 @@ const userSchema = new Schema<UserDocument>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    isEmailVerified: { type: Boolean, default: false },
     userPreferences: { type: userPreferencesSchema, default: {} },
   },
   {
