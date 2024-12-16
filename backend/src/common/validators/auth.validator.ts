@@ -26,7 +26,7 @@ export const verificationEmailSchema = z.object({
   code: verificationCodeSchema,
 });
 
-export const resetPassword = z.object({
+export const resetPasswordSchema = z.object({
   password: passwordSchema,
   verificationCode: verificationCodeSchema,
 });
