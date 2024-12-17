@@ -5,7 +5,6 @@ export class UserService {
     const user = await UserModel.findById(userId, {
       password: false,
     });
-
     return user || null;
   }
 }

@@ -6,7 +6,7 @@ import {
 import { UnauthorizedException } from "../utils/catch-errors";
 import { ErrorCode } from "../enums/error-code.enum";
 import { config } from "../../config/app.config";
-import { PassportStatic } from "passport";
+import passport, { PassportStatic } from "passport";
 import { userService } from "../../modules/user/user.module";
 
 interface JwtPayload {
@@ -17,7 +17,7 @@ interface JwtPayload {
 const options: StrategyOptionsWithRequest = {
   jwtFromRequest: ExtractJwt.fromExtractors([
     (req) => {
-      const accessToken = req.cookie.accessToken;
+      const accessToken = req.cookies.accessToken;
 
       if (!accessToken) {
         throw new UnauthorizedException(
@@ -53,3 +53,5 @@ export const setupJwtStategy = (passport: PassportStatic) => {
     })
   );
 };
+
+export const authenticateJWT = passport.authenticate("jwt", { session: false });
