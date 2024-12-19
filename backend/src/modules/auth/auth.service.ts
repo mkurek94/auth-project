@@ -103,6 +103,14 @@ export class AuthService {
     }
 
     //Check if user enabled 2fa return user = null;
+    if (user.userPreferences.enabled2FA) {
+      return {
+        user: null,
+        mfaRequired: true,
+        accessToken: "",
+        refreshToken: "",
+      };
+    }
 
     const session = await SessionModel.create({
       userId: user._id,
@@ -183,7 +191,7 @@ export class AuthService {
     const validCode = await VerificationCodeModel.findOne({
       code,
       type: VerificationEnum.EMAIL_VERIFICATION,
-      expiredAt: { $gt: new Date() },
+      expiresAt: { $gt: new Date() },
     });
 
     if (!validCode) {

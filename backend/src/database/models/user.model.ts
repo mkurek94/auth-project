@@ -21,7 +21,7 @@ export interface UserDocument extends Document {
 const userPreferencesSchema = new Schema<UserPreferences>({
   enabled2FA: { type: Boolean, default: false },
   emailNotification: { type: Boolean, default: true },
-  twoFactorSecret: { type: String, default: false },
+  twoFactorSecret: { type: String, required: false },
 });
 
 const userSchema = new Schema<UserDocument>(

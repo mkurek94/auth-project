@@ -16,7 +16,10 @@ import {
   getRefreshTokenCookieOptions,
   setAuthenticationCookies,
 } from "../../common/utils/cookie";
-import { NotFoundException, UnauthorizedException } from "../../common/utils/catch-errors";
+import {
+  NotFoundException,
+  UnauthorizedException,
+} from "../../common/utils/catch-errors";
 
 export class AuthController {
   private authService: AuthService;
@@ -45,6 +48,14 @@ export class AuthController {
 
       const { user, accessToken, refreshToken, mfaRequired } =
         await this.authService.login(body);
+
+      if (mfaRequired) {
+        return res.status(HTTPSTATUS.OK).json({
+          message: "Verify MFA Authentication.",
+          mfaRequired,
+          user,
+        });
+      }
 
       return setAuthenticationCookies({
         res,
@@ -94,11 +105,9 @@ export class AuthController {
 
       await this.authService.verifyEmail(code);
 
-      return res
-        .status(HTTPSTATUS.OK)
-        .json({
-          message: "Email verified successfully.",
-        });
+      return res.status(HTTPSTATUS.OK).json({
+        message: "Email verified successfully.",
+      });
     }
   );
 
@@ -108,13 +117,11 @@ export class AuthController {
 
       await this.authService.forgotPassword(email);
 
-      return res
-        .status(HTTPSTATUS.OK)
-        .json({
-          message: "Password reset email sent.",
-        });
+      return res.status(HTTPSTATUS.OK).json({
+        message: "Password reset email sent.",
+      });
     }
-  )
+  );
 
   public resetPassword = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
@@ -122,13 +129,11 @@ export class AuthController {
 
       await this.authService.resetPassword(body);
 
-      return clearAuthenticationCookies(res)
-        .status(HTTPSTATUS.OK)
-        .json({
-          message: "Password reset successfully.",
-        });
+      return clearAuthenticationCookies(res).status(HTTPSTATUS.OK).json({
+        message: "Password reset successfully.",
+      });
     }
-  )
+  );
 
   public logout = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
